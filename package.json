@@ -1,0 +1,9 @@
+{
+	"name": "Mock",
+	"description": "mocking framework for nodejs",
+	"version": "0.1",
+	"private": true,
+	"dependencies": {
+		"should": "1.2.2"
+	}
+}
