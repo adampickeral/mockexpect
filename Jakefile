@@ -14,3 +14,15 @@ task('test', function () {
     { printStdout: true, printStderr: true }
   );
 });
+
+desc('Demo Tests');
+task('demo', function () {
+  jake.exec(
+    "mocha test/demo_test.js -c", 
+    function () {
+      console.log('Tests finished.');
+      complete();
+    },
+    { printStdout: true, printStderr: true }
+  );
+});
