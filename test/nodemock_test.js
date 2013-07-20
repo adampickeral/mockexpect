@@ -141,7 +141,27 @@ describe('nodemock', function () {
   it('fails when a function is called without an expectation being set', function () {
     assert.throws(
       mockDummyObject.secondTestFunction.bind(mockDummyObject), 
-      'secondTestFunction() was called without an expectation being set.'
+      function (err) {
+        return err.message === 'secondTestFunction() was called without an expectation being set.';
+      },
+      'exception was not thrown'
+    );
+  });
+
+  it('shows the actual calls for a function when an expectation is not met', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('this string', 5, 'another string');
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('weird string');
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('that string', 5, 'another string');
+
+    mockDummyObject.testFunction('that string', 5, 'another string');
+    mockDummyObject.testFunction('weird string');
+
+    assert.throws(
+      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject), 
+      function (err) {
+        return err.message === 'testFunction() was not called with [this string,5,another string], but was called with [that string,5,another string], [weird string]';
+      },
+      'exception message did not contain call arguments'
     );
   });
 });
