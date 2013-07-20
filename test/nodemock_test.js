@@ -76,6 +76,7 @@ describe('nodemock', function () {
 
   it('asserts that a function was not called with a string', function () {
     mockDummyObject.testFunction.expect.not.toHaveBeenCalledWith('different string');
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('someString');
 
     mockDummyObject.testFunction('someString');
 
@@ -84,6 +85,8 @@ describe('nodemock', function () {
 
   it('asserts that a function was not called with multiple arguments', function () {
     mockDummyObject.testFunction.expect.not.toHaveBeenCalledWith('someString', 1, 'anotherString');
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('someString', 5, 'anotherString');
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('someString');
 
     mockDummyObject.testFunction('someString');
     mockDummyObject.testFunction('someString', 5, 'anotherString');
@@ -93,6 +96,7 @@ describe('nodemock', function () {
 
   it('asserts that strict equality is enforced', function () {
     mockDummyObject.testFunction.expect.not.toHaveBeenCalledWith(1);
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('1');
 
     mockDummyObject.testFunction('1');
 
@@ -101,6 +105,7 @@ describe('nodemock', function () {
 
   it('asserts that a function was not called with an object', function () {
     mockDummyObject.testFunction.expect.not.toHaveBeenCalledWith({ 'a': 'b', 'c': 2 });
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith({ 'a': 'b', 'c': 1, 'd': 2 });
 
     mockDummyObject.testFunction({ 'a': 'b', 'c': 1, 'd': 2 });
 
@@ -109,6 +114,7 @@ describe('nodemock', function () {
 
   it('asserts that a function was not called with a given type', function () {
     mockDummyObject.testFunction.expect.not.toHaveBeenCalledWith(new nodemock.Matcher(DummyObject));
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new nodemock.Matcher(Function));
 
     mockDummyObject.testFunction(function () { return 'something happened'; });
 
