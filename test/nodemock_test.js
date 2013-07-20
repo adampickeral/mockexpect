@@ -65,6 +65,32 @@ describe('nodemock', function () {
     mockDummyObject.testFunction.should.haveBeenCalledWith({ 'a': 'b', 'c': 1 });
   });
 
+  it('asserts that a function was called with a given type', function () {
+    var DummyObject, mockDummyObject;
+
+    DummyObject = function () {};
+    DummyObject.prototype.testFunction = function () {};
+
+    mockDummyObject = nodemock.mock(DummyObject);
+
+    mockDummyObject.testFunction(function () { return 'something happened'; });
+
+    mockDummyObject.testFunction.should.haveBeenCalledWith(new nodemock.Matcher(Function));
+  });
+
+  it('asserts that a function was called with a mix of specific and non-specific arguments', function () {
+    var DummyObject, mockDummyObject;
+
+    DummyObject = function () {};
+    DummyObject.prototype.testFunction = function () {};
+
+    mockDummyObject = nodemock.mock(DummyObject);
+
+    mockDummyObject.testFunction(function () { return 'something happened'; }, 'string', { 'a': 'b' });
+
+    mockDummyObject.testFunction.should.haveBeenCalledWith(new nodemock.Matcher(Function), 'string', { 'a': 'b' });
+  });
+
   it('asserts that a function was not called with a string', function () {
     var DummyObject, mockDummyObject;
 
@@ -115,5 +141,18 @@ describe('nodemock', function () {
     mockDummyObject.testFunction({ 'a': 'b', 'c': 1, 'd': 2 });
 
     mockDummyObject.testFunction.should.not.haveBeenCalledWith({ 'a': 'b', 'c': 2 });
+  });
+
+  it('asserts that a function was not called with a given type', function () {
+    var DummyObject, mockDummyObject;
+
+    DummyObject = function () {};
+    DummyObject.prototype.testFunction = function () {};
+
+    mockDummyObject = nodemock.mock(DummyObject);
+
+    mockDummyObject.testFunction(function () { return 'something happened'; });
+
+    mockDummyObject.testFunction.should.not.haveBeenCalledWith(new nodemock.Matcher(DummyObject));
   });
 });

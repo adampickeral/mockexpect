@@ -7,9 +7,7 @@ external dependencies:
 mocha
 
 1. Function calls with arguments
-	-primitive equality
-	-object equality
-	-type equality
+  -custom matcher
 2. Return values
 3. Unexpected function calls (set expectations)
 4. Mock functions (not objects)
