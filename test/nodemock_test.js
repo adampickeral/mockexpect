@@ -2,12 +2,20 @@ var nodemock = require('../lib/nodemock');
 var assert = require('assert');
 
 describe('nodemock', function () {
-  var DummyObject, mockDummyObject;
+  var DummyObject, mockDummyObject, CustomMatcher;
 
   beforeEach(function () {
     DummyObject = function () {};
     DummyObject.prototype.testFunction = function () {};
     DummyObject.prototype.secondTestFunction = function () {};
+
+    CustomMatcher = function (expectedObject) {
+      this.expectedObject_ = expectedObject;
+    };
+    CustomMatcher.prototype = new nodemock.Matcher();
+    CustomMatcher.prototype.matches = function (actualObject) {
+      return this.expectedObject_.id === actualObject.id;
+    };
 
     mockDummyObject = nodemock.mock(DummyObject);
   });
@@ -248,5 +256,17 @@ describe('nodemock', function () {
       },
       'exception message did not contain call arguments'
     );
+  });
+
+  it('works with custom matchers', function () {
+    var expected, actualObject;
+
+    expected = { id: 3, field: 'a' };
+    actualObject = { id: 3, field: 'b' };
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new CustomMatcher(expected));
+
+    mockDummyObject.testFunction(actualObject);
+
+    mockDummyObject.assertExpectationsHaveBeenMet();
   });
 });
