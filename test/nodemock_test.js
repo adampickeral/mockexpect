@@ -20,6 +20,16 @@ describe('nodemock', function () {
     mockDummyObject.assertExpectationsHaveBeenMet();
   });
 
+  it('asserts that a function was called an exact number of times', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalled(3);
+
+    mockDummyObject.testFunction();
+    mockDummyObject.testFunction();
+    mockDummyObject.testFunction();
+
+    mockDummyObject.assertExpectationsHaveBeenMet();
+  });
+
   it('all functions are spied on', function () {
     mockDummyObject.secondTestFunction.expect.toHaveBeenCalled();
 
