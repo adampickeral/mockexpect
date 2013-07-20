@@ -6,12 +6,8 @@ Mock framework for NodeJS
 external dependencies:
 mocha
 
-1. Unexpected function calls (set expectations)
-  -actual call messaging
 2. Function calls with arguments
   -custom matcher
-  -object equals needs to check object size
-  -messaging on call count failure
 3. Mock functions (not objects)
 4. Jakefile
   -package?
