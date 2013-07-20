@@ -2,12 +2,20 @@ var nodemock = require('../lib/nodemock');
 var assert = require('assert');
 
 describe('nodemock', function () {
-  var DummyObject, mockDummyObject;
+  var DummyObject, mockDummyObject, CustomMatcher;
 
   beforeEach(function () {
     DummyObject = function () {};
     DummyObject.prototype.testFunction = function () {};
     DummyObject.prototype.secondTestFunction = function () {};
+
+    CustomMatcher = function (expectedObject) {
+      this.expectedObject_ = expectedObject;
+    };
+    CustomMatcher.prototype = new nodemock.Matcher();
+    CustomMatcher.prototype.matches = function (actualObject) {
+      return this.expectedObject_.id === actualObject.id;
+    };
 
     mockDummyObject = nodemock.mock(DummyObject);
   });
@@ -74,6 +82,20 @@ describe('nodemock', function () {
     mockDummyObject.testFunction(function () { return 'something happened'; });
 
     mockDummyObject.assertExpectationsHaveBeenMet();
+  });
+
+  it('fails the assertion when types do not match', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new nodemock.Matcher(DummyObject));
+
+    mockDummyObject.testFunction(function () { return 'something happened'; });
+
+    assert.throws(
+      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject), 
+      function (err) {
+        return err.message === 'testFunction() was not called with [Matcher(function () {})], but was called with [function () { return \'something happened\'; }]';
+      },
+      'exception message did not contain call arguments'
+    );
   });
 
   it('asserts that a function was called with a mix of specific and non-specific arguments', function () {
@@ -216,7 +238,7 @@ describe('nodemock', function () {
     assert.throws(
       mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
       function (err) {
-        return err.message === 'testFunction() was not called with [{ a: something, b: Matcher(Function) }], but was called with [{ 3: function () {}, z: something else }], [{ a: different thing, b: function () {} }]';
+        return err.message === 'testFunction() was not called with [{ a: something, b: Matcher(function Function() { [native code] }) }], but was called with [{ 3: function () {}, z: something else }], [{ a: different thing, b: function () {} }]';
       },
       'exception message did not contain call arguments'
     );
@@ -234,5 +256,17 @@ describe('nodemock', function () {
       },
       'exception message did not contain call arguments'
     );
+  });
+
+  it('works with custom matchers', function () {
+    var expected, actualObject;
+
+    expected = { id: 3, field: 'a' };
+    actualObject = { id: 3, field: 'b' };
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new CustomMatcher(expected));
+
+    mockDummyObject.testFunction(actualObject);
+
+    mockDummyObject.assertExpectationsHaveBeenMet();
   });
 });
