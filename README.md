@@ -6,12 +6,12 @@ Mock framework for NodeJS
 external dependencies:
 mocha
 
-1. Jakefile
-	-run tests
-	-package?
-2. Function calls
-3. Function calls with arguments
+
+1. Function calls
+2. Function calls with arguments
 	-primitive equality
 	-object equality
 	-type equality
-4. Unexpected function calls
+3. Unexpected function calls
+4. Jakefile
+  -package?
