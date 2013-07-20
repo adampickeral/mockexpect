@@ -164,4 +164,45 @@ describe('nodemock', function () {
       'exception message did not contain call arguments'
     );
   });
+
+  it('shows the actual and expected call count in failure message when there are no calls', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalled();
+
+    assert.throws(
+      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject), 
+      function (err) {
+        return err.message === 'expected testFunction() to have been called 1 time but it was never called.';
+      },
+      'call count exception message is not correct'
+    );
+  });
+
+  it('shows the actual and expected call count in failure message when there is one call', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalled(2);
+
+    mockDummyObject.testFunction();
+
+    assert.throws(
+      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject), 
+      function (err) {
+        return err.message === 'expected testFunction() to have been called 2 times but it was called 1 time.';
+      },
+      'call count exception message is not correct'
+    );
+  });
+
+  it('shows the actual and expected call count in failure message when there are multiple calls', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalled(3);
+
+    mockDummyObject.testFunction();
+    mockDummyObject.testFunction();
+
+    assert.throws(
+      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject), 
+      function (err) {
+        return err.message === 'expected testFunction() to have been called 3 times but it was called 2 times.';
+      },
+      'call count exception message is not correct'
+    );
+  });
 });
