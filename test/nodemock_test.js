@@ -159,7 +159,7 @@ describe('nodemock', function () {
     assert.throws(
       mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject), 
       function (err) {
-        return err.message === 'testFunction() was not called with [this string,5,another string], but was called with [that string,5,another string], [weird string]';
+        return err.message === 'testFunction() was not called with [this string, 5, another string], but was called with [that string, 5, another string], [weird string]';
       },
       'exception message did not contain call arguments'
     );
@@ -198,11 +198,41 @@ describe('nodemock', function () {
     mockDummyObject.testFunction();
 
     assert.throws(
-      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject), 
+      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
       function (err) {
         return err.message === 'expected testFunction() to have been called 3 times but it was called 2 times.';
       },
       'call count exception message is not correct'
+    );
+  });
+
+  it('shows the fields of an object in a failure message', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith({'a': 'something', 'b': new nodemock.Matcher(Function)});
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith({3: new nodemock.Matcher(Function), 'z': 'something else'});
+
+    mockDummyObject.testFunction({3: function () {}, 'z': 'something else'});
+    mockDummyObject.testFunction({'a': 'different thing', 'b': function () {}});
+
+    assert.throws(
+      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      function (err) {
+        return err.message === 'testFunction() was not called with [{ a: something, b: Matcher(Function) }], but was called with [{ 3: function () {}, z: something else }], [{ a: different thing, b: function () {} }]';
+      },
+      'exception message did not contain call arguments'
+    );
+  });
+
+  it('deep equality on object matching', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith({'a': 'something', 'b': 'something else'});
+
+    mockDummyObject.testFunction({'a': 'something', 'b': 'something else', 'c': 'another thing'});
+
+    assert.throws(
+      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      function (err) {
+        return err.message === 'testFunction() was not called with [{ a: something, b: something else }], but was called with [{ a: something, b: something else, c: another thing }]';
+      },
+      'exception message did not contain call arguments'
     );
   });
 });
