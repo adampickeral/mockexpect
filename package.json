@@ -18,5 +18,8 @@
     "type": "git",
     "url": "git@github.com:adampickeral/mockexpect.git"
   },
+  "scripts": {
+    "test": "mocha --recursive"
+  },
   "tags": ["mockexpect", "unit", "testing", "mock", "expectation"]
 }
