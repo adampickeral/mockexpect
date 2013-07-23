@@ -5,6 +5,9 @@
 	"directories": {
     "lib": "./lib"
   },
+  "dependencies": {
+    "mocha": "1.12.0"
+  },
   "main": "./lib/mockexpect",
   "author": "Adam Pickeral <adammp85@gmail.com>",
   "homepage": "https://github.com/adampickeral/mockexpect",
