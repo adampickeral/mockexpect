@@ -33,7 +33,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction();
     mockDummyObject.testFunction();
-    mockDummyObject.testFunction();
+    // mockDummyObject.testFunction();
 
     mockDummyObject.assertExpectations();
   });
