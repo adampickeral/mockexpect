@@ -2,6 +2,21 @@
 	"name": "MockExpect",
 	"description": "mocking framework for nodejs",
 	"version": "0.1.0",
-	"private": true,
-	"dependencies": {}
+	"directories": {
+    "lib": "./lib"
+  },
+  "main": "./lib/mockexpect",
+  "author": "Adam Pickeral <adammp85@gmail.com>",
+  "homepage": "https://github.com/adampickeral/mockexpect",
+  "licenses": [
+    {
+      "type": "The MIT License",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:adampickeral/mockexpect.git"
+  },
+  "tags": ["mockexpect", "unit", "testing", "mock", "expectation"]
 }

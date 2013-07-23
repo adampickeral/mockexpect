@@ -25,7 +25,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction();
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was called an exact number of times', function () {
@@ -35,7 +35,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction();
     mockDummyObject.testFunction();
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('all functions are spied on', function () {
@@ -43,13 +43,13 @@ describe('mockexpect', function () {
 
     mockDummyObject.secondTestFunction();
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was not called', function () {
     mockDummyObject.testFunction.expect.not.toHaveBeenCalled();
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was called with a string', function () {
@@ -57,7 +57,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction('someString');
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was called with multiple arguments', function () {
@@ -65,7 +65,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction('someString', 'anotherString', 3);
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was called with an object', function () {
@@ -73,7 +73,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction({ 'a': 'b', 'c': 1 });
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was called with a given type', function () {
@@ -81,7 +81,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction(function () { return 'something happened'; });
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('fails the assertion when types do not match', function () {
@@ -90,7 +90,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction(function () { return 'something happened'; });
 
     assert.throws(
-      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      mockDummyObject.assertExpectations.bind(mockDummyObject),
       function (err) {
         return err.message === 'testFunction() was not called with [Matcher(function () {})], but was called with [function () { return \'something happened\'; }]';
       },
@@ -103,7 +103,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction(function () { return 'something happened'; }, 'string', { 'a': 'b' });
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was not called with a string', function () {
@@ -112,7 +112,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction('someString');
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was not called with multiple arguments', function () {
@@ -123,7 +123,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction('someString');
     mockDummyObject.testFunction('someString', 5, 'anotherString');
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that strict equality is enforced', function () {
@@ -132,7 +132,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction('1');
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was not called with an object', function () {
@@ -141,7 +141,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction({ 'a': 'b', 'c': 1, 'd': 2 });
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('asserts that a function was not called with a given type', function () {
@@ -150,7 +150,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction(function () { return 'something happened'; });
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('return the specified value', function () {
@@ -178,7 +178,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction('weird string');
 
     assert.throws(
-      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      mockDummyObject.assertExpectations.bind(mockDummyObject),
       function (err) {
         return err.message === 'testFunction() was not called with [this string, 5, another string], but was called with [that string, 5, another string], [weird string]';
       },
@@ -190,7 +190,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction.expect.toHaveBeenCalled();
 
     assert.throws(
-      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      mockDummyObject.assertExpectations.bind(mockDummyObject),
       function (err) {
         return err.message === 'expected testFunction() to have been called 1 time but it was never called.';
       },
@@ -204,7 +204,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction();
 
     assert.throws(
-      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      mockDummyObject.assertExpectations.bind(mockDummyObject),
       function (err) {
         return err.message === 'expected testFunction() to have been called 2 times but it was called 1 time.';
       },
@@ -219,7 +219,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction();
 
     assert.throws(
-      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      mockDummyObject.assertExpectations.bind(mockDummyObject),
       function (err) {
         return err.message === 'expected testFunction() to have been called 3 times but it was called 2 times.';
       },
@@ -235,7 +235,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction({'a': 'different thing', 'b': function () {}});
 
     assert.throws(
-      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      mockDummyObject.assertExpectations.bind(mockDummyObject),
       function (err) {
         return err.message === 'testFunction() was not called with [{ a: something, b: Matcher(function Function() { [native code] }) }], but was called with [{ 3: function () {}, z: something else }], [{ a: different thing, b: function () {} }]';
       },
@@ -249,7 +249,7 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction({'a': 'something', 'b': 'something else', 'c': 'another thing'});
 
     assert.throws(
-      mockDummyObject.assertExpectationsHaveBeenMet.bind(mockDummyObject),
+      mockDummyObject.assertExpectations.bind(mockDummyObject),
       function (err) {
         return err.message === 'testFunction() was not called with [{ a: something, b: something else }], but was called with [{ a: something, b: something else, c: another thing }]';
       },
@@ -266,7 +266,7 @@ describe('mockexpect', function () {
 
     mockDummyObject.testFunction(actualObject);
 
-    mockDummyObject.assertExpectationsHaveBeenMet();
+    mockDummyObject.assertExpectations();
   });
 
   it('spies on a static function', function () {
@@ -281,7 +281,7 @@ describe('mockexpect', function () {
 
     ObjectWithStaticFunction.someFunction();
 
-    ObjectWithStaticFunction.assertExpectationsHaveBeenMet();
+    ObjectWithStaticFunction.assertExpectations();
   });
 
   it('invokes the specified function', function () {
