@@ -1,5 +1,5 @@
 {
-	"name": "Mock",
+	"name": "MockExpect",
 	"description": "mocking framework for nodejs",
 	"version": "0.1.0",
 	"private": true,

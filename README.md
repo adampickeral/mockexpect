@@ -1,4 +1,4 @@
-nodemock
+MockExpect
 ========
 
 Mock framework for NodeJS

@@ -1,12 +1,12 @@
 var DemoObject = require('./demo_object');
-var nodemock = require('../lib/nodemock');
+var mockexpect = require('../lib/mockexpect');
 var assert = require('assert');
 
 describe('DemoObject', function () {
   var mockDemoObject;
 
   beforeEach(function () {
-    mockDemoObject = nodemock.mock(DemoObject);
+    mockDemoObject = mockexpect.mock(DemoObject);
   });
 
   it('asserts the test function is called', function () {
@@ -28,7 +28,7 @@ describe('DemoObject', function () {
   });
 
   it('asserts the test function is called with arguments', function () {
-    mockDemoObject.testFunction.expect.toHaveBeenCalledWith('some variable', { 'a': 'b' }, new nodemock.Matcher(Function));
+    mockDemoObject.testFunction.expect.toHaveBeenCalledWith('some variable', { 'a': 'b' }, new mockexpect.Matcher(Function));
 
     mockDemoObject.testFunction('some variable', { 'a': 'b' }, function () {'something happens'});
 

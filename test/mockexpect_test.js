@@ -1,7 +1,7 @@
-var nodemock = require('../lib/nodemock');
+var mockexpect = require('../lib/mockexpect');
 var assert = require('assert');
 
-describe('nodemock', function () {
+describe('mockexpect', function () {
   var DummyObject, mockDummyObject, CustomMatcher;
 
   beforeEach(function () {
@@ -12,12 +12,12 @@ describe('nodemock', function () {
     CustomMatcher = function (expectedObject) {
       this.expectedObject_ = expectedObject;
     };
-    CustomMatcher.prototype = new nodemock.Matcher();
+    CustomMatcher.prototype = new mockexpect.Matcher();
     CustomMatcher.prototype.matches = function (actualObject) {
       return this.expectedObject_.id === actualObject.id;
     };
 
-    mockDummyObject = nodemock.mock(DummyObject);
+    mockDummyObject = mockexpect.mock(DummyObject);
   });
 
   it('asserts that a function was called', function () {
@@ -77,7 +77,7 @@ describe('nodemock', function () {
   });
 
   it('asserts that a function was called with a given type', function () {
-    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new nodemock.Matcher(Function));
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new mockexpect.Matcher(Function));
 
     mockDummyObject.testFunction(function () { return 'something happened'; });
 
@@ -85,7 +85,7 @@ describe('nodemock', function () {
   });
 
   it('fails the assertion when types do not match', function () {
-    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new nodemock.Matcher(DummyObject));
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new mockexpect.Matcher(DummyObject));
 
     mockDummyObject.testFunction(function () { return 'something happened'; });
 
@@ -99,7 +99,7 @@ describe('nodemock', function () {
   });
 
   it('asserts that a function was called with a mix of specific and non-specific arguments', function () {
-    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new nodemock.Matcher(Function), 'string', { 'a': 'b' });
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new mockexpect.Matcher(Function), 'string', { 'a': 'b' });
 
     mockDummyObject.testFunction(function () { return 'something happened'; }, 'string', { 'a': 'b' });
 
@@ -145,8 +145,8 @@ describe('nodemock', function () {
   });
 
   it('asserts that a function was not called with a given type', function () {
-    mockDummyObject.testFunction.expect.not.toHaveBeenCalledWith(new nodemock.Matcher(DummyObject));
-    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new nodemock.Matcher(Function));
+    mockDummyObject.testFunction.expect.not.toHaveBeenCalledWith(new mockexpect.Matcher(DummyObject));
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith(new mockexpect.Matcher(Function));
 
     mockDummyObject.testFunction(function () { return 'something happened'; });
 
@@ -228,8 +228,8 @@ describe('nodemock', function () {
   });
 
   it('shows the fields of an object in a failure message', function () {
-    mockDummyObject.testFunction.expect.toHaveBeenCalledWith({'a': 'something', 'b': new nodemock.Matcher(Function)});
-    mockDummyObject.testFunction.expect.toHaveBeenCalledWith({3: new nodemock.Matcher(Function), 'z': 'something else'});
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith({'a': 'something', 'b': new mockexpect.Matcher(Function)});
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith({3: new mockexpect.Matcher(Function), 'z': 'something else'});
 
     mockDummyObject.testFunction({3: function () {}, 'z': 'something else'});
     mockDummyObject.testFunction({'a': 'different thing', 'b': function () {}});
@@ -275,7 +275,7 @@ describe('nodemock', function () {
     ObjectWithStaticFunction = {};
     ObjectWithStaticFunction.someFunction = function () {};
 
-    nodemock.spyOn(ObjectWithStaticFunction, 'someFunction');
+    mockexpect.spyOn(ObjectWithStaticFunction, 'someFunction');
 
     ObjectWithStaticFunction.someFunction.expect.toHaveBeenCalled();
 
