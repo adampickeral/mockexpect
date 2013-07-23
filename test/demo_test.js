@@ -16,7 +16,7 @@ describe('DemoObject', function () {
     mockDemoObject.testFunction();
     mockDemoObject.anotherTestFunction();
 
-    mockDemoObject.assertExpectationsHaveBeenMet();
+    mockDemoObject.assertExpectations();
   });
 
   it('can assert that functions were not called', function () {
@@ -24,7 +24,7 @@ describe('DemoObject', function () {
 
     // mockDemoObject.testFunction();
 
-    mockDemoObject.assertExpectationsHaveBeenMet();
+    mockDemoObject.assertExpectations();
   });
 
   it('asserts the test function is called with arguments', function () {
@@ -32,7 +32,7 @@ describe('DemoObject', function () {
 
     mockDemoObject.testFunction('some variable', { 'a': 'b' }, function () {'something happens'});
 
-    mockDemoObject.assertExpectationsHaveBeenMet();
+    mockDemoObject.assertExpectations();
   });
 
   it('can also return values', function () {
