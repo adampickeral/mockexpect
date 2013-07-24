@@ -1,11 +1,13 @@
 var mockexpect = require('../lib/mockexpect');
 var assert = require('assert');
+var EventEmitter = require('events').EventEmitter;
 
 describe('mockexpect', function () {
   var DummyObject, mockDummyObject, CustomMatcher;
 
   beforeEach(function () {
     DummyObject = function () {};
+    DummyObject.prototype = new EventEmitter();
     DummyObject.prototype.testFunction = function () {};
     DummyObject.prototype.secondTestFunction = function () {};
 
@@ -296,5 +298,19 @@ describe('mockexpect', function () {
     mockDummyObject.testFunction();
 
     assert.ok(functionCalled, 'function was not called');
+  });
+
+  it('does not mock out EventEmitter so event dispatching can be easily tested', function () {
+    var eventEmitted;
+
+    eventEmitted = false;
+
+    mockDummyObject.on('someEvent', function () {
+      eventEmitted = true;
+    });
+
+    mockDummyObject.emit('someEvent');
+
+    assert.ok(eventEmitted, 'event was emitted');
   });
 });
