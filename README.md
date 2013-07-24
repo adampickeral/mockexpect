@@ -48,3 +48,13 @@ If you were to invoke `testFunction()` in your code without setting an expectati
     
     mockexpect.spyOn(DummyObject, 'someFunction');
     DummyObject.someFunction.expect.toHaveBeenCalled();
+
+### Emit Events
+If an object that is being mocked is an instance of the nodejs EventEmitter, then the EventEmitter functions will NOT be mocked out. This is intentionally done to facilitate easier testing of event listening and dispatching.
+
+    DummyObject.prototype = new EventEmitter();
+    
+    mockDummyObject = mockexpect.mock(DummyObject);
+    
+    mockDummyObject.emit('someEvent');
+
