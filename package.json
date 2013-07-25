@@ -1,6 +1,6 @@
 {
-	"name": "MockExpect",
-	"description": "mocking framework for nodejs",
+	"name": "mockexpect",
+	"description": "Mocking framework for nodejs with strict expectations",
 	"version": "0.1.0",
 	"directories": {
     "lib": "./lib"
