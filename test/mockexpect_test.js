@@ -300,6 +300,34 @@ describe('mockexpect', function () {
     assert.ok(functionCalled, 'function was not called');
   });
 
+  it('invokes the specified function only when called with the specified arguments', function () {
+    var functionACalled, functionBCalled;
+
+    functionACalled = false;
+    functionBCalled = false;
+
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('a').andCall(function () {
+      functionACalled = true;
+    });
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('b').andCall(function () {
+      functionBCalled = true;
+    });
+
+    mockDummyObject.testFunction('a');
+    assert.ok(functionACalled, 'function a was not called');
+
+    mockDummyObject.testFunction('b');
+    assert.ok(functionBCalled, 'function b was not called');
+  });
+
+  it('returns specific values for calls with specific arguments', function () {
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('a').andReturn(500);
+    mockDummyObject.testFunction.expect.toHaveBeenCalledWith('b').andReturn(777);
+
+    assert.strictEqual(mockDummyObject.testFunction('a'), 500);
+    assert.strictEqual(mockDummyObject.testFunction('b'), 777);
+  });
+
   it('does not mock out EventEmitter so event dispatching can be easily tested', function () {
     var eventEmitted;
 
